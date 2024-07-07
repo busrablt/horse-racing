@@ -5,20 +5,27 @@ enum HorseStatus {
 }
 
 export class Horse {
-  private condition: number;
+  private _condition: number;
   private traveled: number = 0;
   private status = HorseStatus.Standing;
 
   constructor(public id: number, public name: string, public color: string) {
-    this.condition = Math.floor(Math.random() * 100) + 1;
+    this._condition = Math.floor(Math.random() * 100) + 1;
   }
 
-  move() {
+  move(targetDistance: number) {
     this.status =
       this.status === HorseStatus.Running1
         ? HorseStatus.Running2
         : HorseStatus.Running1;
-    this.traveled += this.condition;
+
+    if (this.traveled + this._condition >= targetDistance) {
+      this.traveled = targetDistance;
+      this.status = HorseStatus.Standing;
+      return;
+    } else {
+      this.traveled += this._condition;
+    }
   }
 
   getDistance() {
@@ -27,9 +34,14 @@ export class Horse {
 
   resetDistance() {
     this.traveled = 0;
+    this.status = HorseStatus.Standing;
   }
 
   stop() {
     this.status = HorseStatus.Standing;
+  }
+
+  get condition() {
+    return this._condition;
   }
 }
