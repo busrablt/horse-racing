@@ -1,0 +1,66 @@
+<template>
+  <div class="dynamic-table">
+    <div class="dynamic-table__title">{{title}}</div>
+    <table>
+      <thead>
+        <tr>
+          <th v-for="(header, index) in headers" :key="index">
+            {{ header }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(row, rowIndex) in data" :key="rowIndex">
+          <td v-for="(header, headerIndex) in headers" :key="headerIndex">
+            {{ row[header] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "DynamicTable",
+  props: {
+    title: {
+      type: String,
+      required: false,
+    },
+    headers: {
+      type: Array,
+      required: true,
+    },
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.dynamic-table {
+  &__title {
+    text-align: center;
+    margin: 14px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th,
+    td {
+      text-transform: capitalize;
+      border: 1px solid $border-gray;
+      padding: 8px;
+      font-family: $font-base;
+    }
+
+    th {
+      background-color: $light-gray;
+      text-align: left;
+    }
+  }
+}
+</style>
