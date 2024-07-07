@@ -1,7 +1,17 @@
+$white: #ffff;
 $green: #61BA8B;
 $red: #d85264;
 $gray: #aaafb7;
 $light-gray: #f2f2f2; 
 $border-gray: #ecedef;
+$olive-gray: #777575;
 
 $font-base: "Wittgenstein";
+
+$breakpoints: (
+  "xs": 340px,
+  "sm": 576px,
+  "md": 768px,
+  "lg": 992px,
+  "xl": 1200px
+) !default;

@@ -4,21 +4,28 @@
     <div>
       <Button value="Generate Program" @click="generateProgram()" />
       <Button
-        value="Start / Pause"
+        :value="buttonName"
         :type="buttonType"
         @click="startPauseButton"
+        :disabled="!this.isGenerateProgram"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import Button from "../components/Button.vue";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import Button from "@/components/Button.vue";
 export default {
   name: "Navbar",
   components: {
     Button,
+  },
+  props: {
+    isGenerateProgram: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
@@ -26,15 +33,23 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["isRaceStarted"]),
     buttonType() {
-      return this.isStarted ? "green" : "red";
+      return this.isRaceStarted ? "red" : "green";
+    },
+    buttonName() {
+      return this.isRaceStarted ? "Pause" : "Start";
     },
   },
   methods: {
-    ...mapActions(["generateProgram"]),
+    ...mapActions(["generateProgram", "startNextRace"]),
+    ...mapMutations(["setPaused"]),
     startPauseButton() {
-      this.isStarted = !this.isStarted;
-    }
+      if (!this.isRaceStarted) {
+        return this.startNextRace();
+      }
+      return this.setPaused(true);
+    },
   },
 };
 </script>
@@ -49,6 +64,12 @@ export default {
     font-size: 28px;
     font-weight: 600;
     font-family: $font-base;
+  }
+  @media screen and (max-width: map-get($breakpoints, "md")) {
+    padding: 6px 0 12px;
+    span {
+      font-size: 18px;
+    }
   }
 }
 </style>

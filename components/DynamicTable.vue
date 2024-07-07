@@ -1,6 +1,6 @@
 <template>
   <div class="dynamic-table">
-    <div class="dynamic-table__title">{{title}}</div>
+    <div class="dynamic-table__title">{{ title }}</div>
     <table>
       <thead>
         <tr>
@@ -21,7 +21,8 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "DynamicTable",
   props: {
     title: {
@@ -37,14 +38,17 @@ export default {
       required: true,
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
 .dynamic-table {
   &__title {
     text-align: center;
-    margin: 14px 0;
+    margin: 12px 0;
+    @media screen and (max-width: map-get($breakpoints, "md")) {
+      font-size: 13px;
+    }
   }
   table {
     width: 100%;
@@ -55,6 +59,9 @@ export default {
       border: 1px solid $border-gray;
       padding: 8px;
       font-family: $font-base;
+      @media screen and (max-width: map-get($breakpoints, "md")) {
+        font-size: 12px;
+      }
     }
 
     th {

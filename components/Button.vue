@@ -1,32 +1,41 @@
 <template>
-  <button :class="buttonClass" @click="handleClick">
-    {{value}}
+  <button
+    :class="[buttonClass, { 'cursor-none': disabled }]"
+    @click="handleClick"
+    :disabled="disabled"
+  >
+    {{ value }}
   </button>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "Button",
   props: {
     value: {
-        type: String
+      type: String,
     },
     type: {
       type: String,
-      default: "gray"
-    }
+      default: "gray",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     buttonClass() {
       return `button ${this.type}`;
-    }
+    },
   },
   methods: {
-    handleClick(event) {
+    handleClick(event: any) {
       this.$emit("click", event);
-    }
-  }
-}
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -38,6 +47,9 @@ export default {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  @media screen and (max-width: map-get($breakpoints, "md")) {
+    font-size: 14px;
+  }
   &.gray {
     background-color: $gray;
   }
@@ -47,6 +59,8 @@ export default {
   &.green {
     background-color: $green;
   }
+  &.cursor-none {
+    cursor: not-allowed;
+  }
 }
-
 </style>

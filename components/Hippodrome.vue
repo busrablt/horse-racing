@@ -1,39 +1,74 @@
 <template>
-  <div>
+  <div ref="hippodrome">
+    <div class="round">{{ roundTitle }}</div>
     <div class="lane" v-for="(horse, i) in horses" :key="i">
       <div class="lane__number">
         <div>{{ i + 1 }}</div>
       </div>
       <div class="lane__path">
-        <Horse :horse="horse" :distance="distance" />
+        <Horse
+          :horse="horse"
+          :distance="distance"
+          :lane-length="hippodromeWidth"
+          :laneNumber="i + 1"
+        />
       </div>
       <div class="lane__finish-line"></div>
     </div>
   </div>
 </template>
-
-<script>
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+import type { Round } from "@/utils/round";
 import Horse from "./Horse.vue";
-export default {
+export default defineComponent({
   name: "Hippodrome",
   components: {
     Horse,
   },
   props: {
-    horses: {
-      type: Array,
+    round: {
+      type: Object as PropType<Round>,
       required: true,
     },
-    distance: {
-      type: Number,
+    roundTitle: {
+      type: String,
       required: true,
     },
   },
-
-};
+  data() {
+    return {
+      hippodromeWidth: 0,
+    };
+  },
+  mounted() {
+    const ref = this.$refs.hippodrome as HTMLElement;
+    if (ref) {
+      this.hippodromeWidth = ref.offsetWidth - 120;
+    }
+  },
+  computed: {
+    horses() {
+      return this.round.getHorses();
+    },
+    distance() {
+      return this.round.distance;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
+.round {
+  width: 100%;
+  text-align: center;
+  color: $olive-gray;
+  font-size: 20px;
+  margin-bottom: 5px;
+  @media screen and (max-width: map-get($breakpoints, "md")) {
+    font-size: 16px;
+  }
+}
 .lane {
   display: flex;
   height: 80px;
@@ -45,9 +80,9 @@ export default {
     justify-content: center;
     align-items: center;
     background-color: $green;
-    border: 1px solid white;
+    border: 1px solid $white;
     div {
-      color: white;
+      color: $white;
       transform: rotate(270deg);
     }
   }
