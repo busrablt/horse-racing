@@ -1,4 +1,4 @@
-enum HorseStatus {
+export enum HorseStatus {
   Standing = "standing",
   Running1 = "running-1",
   Running2 = "running-2",
