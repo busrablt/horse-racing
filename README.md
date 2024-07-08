@@ -1,4 +1,4 @@
-# horse-racing
+# Horse Racing Project
 
 ## Build Setup
 
@@ -9,61 +9,52 @@ $ npm install
 # serve with hot reload at localhost:3000
 $ npm run dev
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+# run unit tests
+npm run test:unit
 
-# generate static project
-$ npm run generate
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+## Description
 
-## Special Directories
+This project is a horse racing game built with Typescript, Nuxt.js 2 and utilizes Vuex for state management with a responsive interface for optimal user experience.
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+## Features
 
-### `assets`
+- Randomly generate a list of 1-20 horses.
+- Create a race schedule consisting of 6 runs.
+- Start races sequentially with a single start button.
+- Pause the race with the pause button.
+- Display run results in order.
+- Animate the horses during the race.
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+## Project Structure
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+`components/` Contains Vue components used throughout the project.
 
-### `components`
+`pages/` The homepage of the application.
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+`store/` Vuex store directory, containing state management logic.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
+`utils/` Utility functions and constants used throughout the project.
 
-### `layouts`
+- `constants` Constants used for horse colors and names.
+- `horse`: TypeScript class and enum for managing individual horses.
+  - `move()`: Moves the horse a random distance based on its condition until it reaches or exceeds targetDistance.
+  - `getDistance()`: Retrieves the distance the horse has traveled.
+  - `resetDistance()`: Resets the traveled distance and sets the status to Standing.
+  - `stop()`: Sets the status to Standing, indicating the horse has stopped moving.
+  - get `condition()`: Retrieves the horse's condition.
+- `round`: TypeScript class for managing rounds of horse races.
+  - `selectHorsesToRace()`: void: Randomly selects 10 horses from a given list to participate in the race.
+  - `getResults()`: Returns an array of horse IDs that finished the race.
+  - `getHorses()`: Returns the list of horses selected for the race.
+- `helpers`: Provides functions for formatting ordinal numbers and generating table titles based on round data.
 
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
+`assets/` Static assets such as images and styles.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+- `_fonts` Contains Google Wittgenstein Italic Font file.
+- `_variables` Contains SCSS variables defining colors, breakpoints for responsive design, and font styles for consistent theming across the project.
+- `_mixins` Contains mixins for custom media screens.
+- `svg` Contains SVG files for horse icons.
 
-
-### `pages`
-
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+`tests/` Includes Jest tests for components, pages, and helpers folders.
