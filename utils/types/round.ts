@@ -1,7 +1,7 @@
 import type { Horse } from "./horse";
 export class Round {
-  private results: number[] = [];
-  private horses: Horse[] = [];
+  public results: number[] = [];
+  public horses: Horse[] = [];
   public isFinished: boolean = false;
   constructor(public distance: number, public lap: number) {}
 
