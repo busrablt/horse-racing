@@ -49,7 +49,8 @@ export default defineComponent({
   border-radius: 5px;
   cursor: pointer;
   @media screen and (max-width: map-get($breakpoints, "md")) {
-    font-size: 14px;
+    font-size: 12px;
+    padding: 6px 12px;
   }
   &.gray {
     background-color: $gray;

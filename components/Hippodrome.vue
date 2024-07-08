@@ -71,7 +71,7 @@ export default defineComponent({
   text-align: center;
   color: $olive-gray;
   font-size: 20px;
-  margin-bottom: 5px;
+  margin-bottom: 14px;
   @media screen and (max-width: map-get($breakpoints, "md")) {
     font-size: 16px;
   }

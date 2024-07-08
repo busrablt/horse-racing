@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <span>Horse Racing</span>
-    <div>
+    <div class="navbar__buttons">
       <Button value="Generate Program" @click="generateProgram()" />
       <Button
         :value="buttonName"
@@ -31,7 +31,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      isRaceStarted: "isRaceStarted"
+      isRaceStarted: "isRaceStarted",
     }),
     buttonType() {
       return this.isRaceStarted ? "red" : "green";
@@ -41,8 +41,11 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions({generateProgram: "generateProgram", startNextRace: "startNextRace"}),
-    ...mapMutations({setPaused: "setPaused"}),
+    ...mapActions({
+      generateProgram: "generateProgram",
+      startNextRace: "startNextRace",
+    }),
+    ...mapMutations({ setPaused: "setPaused" }),
     startPauseButton() {
       if (!this.isRaceStarted) {
         this.startNextRace();
@@ -65,10 +68,17 @@ export default defineComponent({
     font-weight: 600;
     font-family: $font-base;
   }
+  &__buttons {
+    display: flex;
+    gap: 24px;
+  }
   @media screen and (max-width: map-get($breakpoints, "md")) {
     padding: 6px 0 12px;
     span {
       font-size: 18px;
+    }
+    &__buttons {
+      gap: 8px;
     }
   }
 }

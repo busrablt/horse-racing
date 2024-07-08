@@ -64,10 +64,12 @@ export default defineComponent({
         padding: 4px 6px;
       }
     }
-
     th {
-      background-color: $light-gray;
+      background-color: $porcelain;
       text-align: left;
+    }
+    tr:nth-child(even) {
+      background-color: $light-gray;
     }
   }
 }

@@ -27,7 +27,7 @@ export const Horses = {
   "Midnight": "blue",
   "Apollo": "olive",
   "Luna": "orange",
-  "Rio Grande": "purple",
+  "Grande": "purple",
   "Ember": "pink",
   "Zephyr": "brown",
   "Champion": "gray",
