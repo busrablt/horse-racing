@@ -1,6 +1,6 @@
 <template>
   <div class="dynamic-table">
-    <div class="dynamic-table__title">{{ title }}</div>
+    <div v-if="title" class="dynamic-table__title">{{ title }}</div>
     <table>
       <thead>
         <tr>
@@ -45,7 +45,8 @@ export default defineComponent({
 .dynamic-table {
   &__title {
     text-align: center;
-    margin: 12px 0;
+    padding: 10px;
+    background-color: $light-green;
     @media screen and (max-width: map-get($breakpoints, "md")) {
       font-size: 13px;
     }

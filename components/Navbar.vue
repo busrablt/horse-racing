@@ -2,7 +2,7 @@
   <div class="navbar">
     <span>Horse Racing</span>
     <div class="navbar__buttons">
-      <Button value="Generate Program" @click="generateProgram()" />
+      <Button value="Generate Program" @click="generateSchedule" />
       <Button
         :value="buttonName"
         :type="buttonType"
@@ -20,6 +20,11 @@ import Button from "@/components/Button.vue";
 
 export default defineComponent({
   name: "Navbar",
+  data() {
+    return {
+      playSound: true,
+    }
+  },
   components: {
     Button,
   },
@@ -41,12 +46,23 @@ export default defineComponent({
     },
   },
   methods: {
+    ...mapMutations({ setPaused: "setPaused" }),
     ...mapActions({
       generateProgram: "generateProgram",
       startNextRace: "startNextRace",
     }),
-    ...mapMutations({ setPaused: "setPaused" }),
+    generateSchedule () {
+      this.playSound = true;
+      this.generateProgram();
+    },
     startPauseButton() {
+      const horseSound = require('@/assets/sfx/horse.mpeg').default;
+      const neighing = new Audio(horseSound);
+      if (this.playSound) {
+        neighing.play();
+        this.playSound = false;
+      }
+
       if (!this.isRaceStarted) {
         this.startNextRace();
       } else {

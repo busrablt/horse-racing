@@ -56,5 +56,6 @@ This project is a horse racing game built with Typescript, Nuxt.js 2 and utilize
 - `_variables` Contains SCSS variables defining colors, breakpoints for responsive design, and font styles for consistent theming across the project.
 - `_mixins` Contains mixins for custom media screens.
 - `svg` Contains SVG files for horse icons.
+- `sfx` Contains sounds effect.
 
 `tests/` Includes Jest tests for components, pages, and helpers folders.

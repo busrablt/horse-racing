@@ -19,7 +19,7 @@ describe("Horse Class", () => {
 
   test("Should move correctly", () => {
     const initialCondition = horse.condition;
-    horse.move(100);
+    horse.move(200);
     expect(horse.getDistance()).toBe(initialCondition);
     expect(horse.status).toBe(HorseStatus.Running1);
   });

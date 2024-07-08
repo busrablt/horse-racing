@@ -44,7 +44,7 @@ describe("Homepage", () => {
       localVue,
     });
     expect(wrapper.exists()).toBe(true);
-    const horseListTitle = wrapper.find(".content__table-container__title");
+    const horseListTitle = wrapper.find(".wrapper__content__table-wrapper__title");
     expect(horseListTitle.text()).toContain("Horse List");
   });
 

@@ -162,6 +162,8 @@ export default defineComponent({
     }
     &__table-wrapper {
       border: 1px solid $border-gray;
+      box-shadow: 15px 5px 20px -8px rgba(0,0,0,0.22);
+
       border-radius: 3px;
       height: fit-content;
       &__title {

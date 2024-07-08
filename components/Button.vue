@@ -41,6 +41,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .button {
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.5s ease;
   color: white;
   font-family: $font-base;
   font-size: 16px;
@@ -63,6 +65,9 @@ export default defineComponent({
   }
   &.cursor-none {
     cursor: not-allowed;
+  }
+  &:hover {
+    box-shadow: none;
   }
 }
 </style>
