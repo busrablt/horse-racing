@@ -56,9 +56,12 @@ export const mutations: MutationTree<RootState> = {
   },
   horseFinish(state, index: number) {
     const round = state.rounds.find(round => round.lap === state.currentLap);
-    if (round) {
-      const horse = round.horses[index];
-      horse.stop();
+    if (!round) {
+      return;
+    }
+    const horse = round.horses[index];
+    horse.stop();
+    if (!round.results.find(id => id === horse.id)) {
       round.results.push(horse.id);
     }
   },
