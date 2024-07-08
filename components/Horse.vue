@@ -3,12 +3,14 @@
     <div
       class="saddle"
       :style="{
+        top: `${horse.status !== 'standing' ? '30px': '' }`,
         left: `${traveledPixels + 46}px`,
         background: horseColors[horse.color],
       }"
     />
     <div
       :style="{
+        top: `${horse.status !== 'standing' ? '32px': '' }`,
         left: `${traveledPixels + 55}px`,
         background: horseColors[horse.color],
       }"
@@ -17,7 +19,7 @@
       {{ laneNumber }}
     </div>
     <img
-      :src="require(`~/assets/svg/${horse.status}.svg`)"
+      :src="require(`@/assets/svg/${horse.status}.svg`)"
       alt="horse"
       class="horse"
       :style="{ left: `${traveledPixels}px` }"
@@ -27,8 +29,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import type { Horse } from "~/utils/horse";
-import { HorseColors } from "@/utils/constant";
+import type { Horse } from "@/utils/types/horse";
+import { HorseColors } from "~/utils/constants";
 export default defineComponent({
   props: {
     horse: {
@@ -54,10 +56,7 @@ export default defineComponent({
     };
   },
   computed: {
-    animationDuration() {
-      return `${this.distance / this.horse.condition}s`;
-    },
-    traveledPixels() {
+    traveledPixels(): number {
       const traveledPixel =
         (this.laneLength * this.horse.getDistance()) / this.distance;
       return traveledPixel;
@@ -71,9 +70,9 @@ export default defineComponent({
   width: 18px;
   height: 17px;
   position: absolute;
-  top: 27px;
+  top: 26px;
   z-index: 2;
-  border-radius: 20% 30% 12% 10%;
+  border-radius: 25% 30% 20% 12%;
 }
 
 .number {
@@ -82,7 +81,7 @@ export default defineComponent({
   z-index: 10;
   font-size: 10px;
   color: white;
-  top: 30px;
+  top: 28px;
   font-weight: 900;
   padding: 2px;
   padding-left: 0px;

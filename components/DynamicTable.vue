@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "DynamicTable",
@@ -57,10 +57,11 @@ export default defineComponent({
     td {
       text-transform: capitalize;
       border: 1px solid $border-gray;
-      padding: 8px;
+      padding: 8px 12px;
       font-family: $font-base;
       @media screen and (max-width: map-get($breakpoints, "md")) {
         font-size: 12px;
+        padding: 4px 6px;
       }
     }
 

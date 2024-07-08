@@ -7,16 +7,18 @@
         :value="buttonName"
         :type="buttonType"
         @click="startPauseButton"
-        :disabled="!this.isGenerateProgram"
+        :disabled="!isGenerateProgram"
       />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import Button from "@/components/Button.vue";
-export default {
+
+export default defineComponent({
   name: "Navbar",
   components: {
     Button,
@@ -27,13 +29,10 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      isStarted: true,
-    };
-  },
   computed: {
-    ...mapGetters(["isRaceStarted"]),
+    ...mapGetters({
+      isRaceStarted: "isRaceStarted"
+    }),
     buttonType() {
       return this.isRaceStarted ? "red" : "green";
     },
@@ -42,16 +41,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["generateProgram", "startNextRace"]),
-    ...mapMutations(["setPaused"]),
+    ...mapActions({generateProgram: "generateProgram", startNextRace: "startNextRace"}),
+    ...mapMutations({setPaused: "setPaused"}),
     startPauseButton() {
       if (!this.isRaceStarted) {
-        return this.startNextRace();
+        this.startNextRace();
+      } else {
+        this.setPaused(true);
       }
-      return this.setPaused(true);
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

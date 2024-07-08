@@ -51,12 +51,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { mapActions, mapGetters } from "vuex";
+import type { Horse } from "@/utils/types/horse";
+import type { Round } from "@/utils/types/round";
+import helpers from "@/utils/helpers"
 import Navbar from "@/components/Navbar.vue";
 import DynamicTable from "@/components/DynamicTable.vue";
 import Hippodrome from "@/components/Hippodrome.vue";
-export default {
+export default defineComponent({
   components: {
     DynamicTable,
     Navbar,
@@ -66,23 +70,25 @@ export default {
     return {
       horseHeaders: ["name", "condition", "color"],
       competitionHeaders: ["position", "name"],
+      formatTableTitle: helpers.formatTableTitle
+      
     };
   },
   mounted() {
     this.initialize();
   },
   computed: {
-    ...mapGetters(["getHorseList", "getRounds", "getCurrentLap"]),
-    currentRound() {
-      return this.getRounds.find((round) => round.lap === this.getCurrentLap);
+    ...mapGetters({getHorseList: "getHorseList", getRounds: "getRounds", getCurrentLap: "getCurrentLap"}),
+    currentRound(): Round {
+      return this.getRounds.find((round: any) => round.lap === this.getCurrentLap);
     },
   },
   methods: {
-    ...mapActions(["initialize", "startNextRace"]),
+    ...mapActions({ initialize: "initialize", startNextRace: "startNextRace" }),
     startPauseButton() {
       this.startNextRace();
     },
-    formatResults(round) {
+    formatResults(round: Round) {
       const results = round.getResults();
       const result = [];
       for (let i = 0; i < results.length; i++) {
@@ -90,12 +96,12 @@ export default {
         const horse = round.horses.find((horse) => horse.id === id);
         result.push({
           position: i + 1,
-          name: horse.name,
+          name: horse?.name,
         });
       }
       return result;
     },
-    formatProgram(horses) {
+    formatProgram(horses: Horse[]) {
       const program = [];
       for (let i = 0; i < horses.length; i++) {
         program.push({
@@ -104,18 +110,9 @@ export default {
         });
       }
       return program;
-    },
-    ordinalNumber(number) {
-      const suffixes = ["th", "st", "nd", "rd"];
-      const v = number % 100;
-      return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
-    },
-    formatTableTitle(round) {
-      const formatedLap = this.ordinalNumber(round.lap);
-      return `${formatedLap} Lap - ${round.distance}m`;
-    },
+    }
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -154,9 +151,9 @@ export default {
     border-radius: 3px;
     height: fit-content;
     &__title {
-      font-size: 24px;
+      font-size: 20px;
       text-align: center;
-      margin: 10px 0;
+      margin: 10px 0 4px;
       @media screen and (max-width: map-get($breakpoints, "md")) {
         font-size: 16px;
         margin: 6px 0;
@@ -164,8 +161,11 @@ export default {
     }
     &__scroll {
       overflow-y: scroll;
-      max-height: 760px;
+      max-height: 720px;
       overflow-x: scroll;
+      @media screen and (max-width: map-get($breakpoints, "md")) {
+        max-height: 280px;
+      }
     }
   }
   img {

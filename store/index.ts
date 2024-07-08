@@ -1,22 +1,29 @@
-import { Horse } from "~/utils/horse"
-import { Horses } from "~/utils/constant"
-import { Round } from "~/utils/round"
+import Vue from 'vue';
+import Vuex, { MutationTree, ActionTree, GetterTree } from 'vuex';
+import { Horse } from "@/utils/types/horse";
+import { Round } from "@/utils/types/round";
+import { Horses, PathDistances } from "~/utils/constants";
+
+Vue.use(Vuex);
+
 
 export const state = () => ({
-  horseList: [],
-  rounds: [],
+  horseList: [] as Horse[],
+  rounds: [] as Round[],
   currentLap: 1,
   raceInProgress: false,
   isPaused: false,
-  lastRunningHorse: null
-})
+  lastRunningHorse: null as number | null
+});
 
-export const mutations = {
-  setHorseList(state, list) {
-    state.horseList = list
+export type RootState = ReturnType<typeof state>;
+
+export const mutations: MutationTree<RootState> = {
+  setHorseList(state, list: Horse[]) {
+    state.horseList = list;
   },
-  setRounds(state, rounds) {
-    state.rounds = rounds
+  setRounds(state, rounds: Round[]) {
+    state.rounds = rounds;
   },
   nextRound(state) {
     state.currentLap++;
@@ -24,14 +31,16 @@ export const mutations = {
   resetLap(state) {
     state.currentLap = 1;
   },
-  setRaceInProgress(state, value) {
+  setRaceInProgress(state, value: boolean) {
     state.raceInProgress = value;
   },
   roundHorseReset(state) {
     const round = state.rounds.find(round => round.lap === state.currentLap);
-    round.horses.forEach(horse => {
-      horse.resetDistance();
-    });
+    if (round) {
+      round.horses.forEach(horse => {
+        horse.resetDistance();
+      });
+    }
   },
   resetAllHorses(state) {
     state.lastRunningHorse = null;
@@ -39,41 +48,47 @@ export const mutations = {
       horse.resetDistance();
     });
   },
-  horseMove(state, index) {
+  horseMove(state, index: number) {
     const round = state.rounds.find(round => round.lap === state.currentLap);
-    round.horses[index].move(round.distance);
+    if (round) {
+      round.horses[index].move(round.distance);
+    }
   },
-  horseFinish(state, index) {
+  horseFinish(state, index: number) {
     const round = state.rounds.find(round => round.lap === state.currentLap);
-    const horse = round.horses[index];
-    horse.stop();
-    round.results.push(horse.id);
+    if (round) {
+      const horse = round.horses[index];
+      horse.stop();
+      round.results.push(horse.id);
+    }
   },
-  setRoundFinished(state, value) {
+  setRoundFinished(state, value: boolean) {
     const round = state.rounds.find(round => round.lap === state.currentLap);
-    round.isFinished = value;
+    if (round) {
+      round.isFinished = value;
+    }
   },
-  setPaused(state, value) {
+  setPaused(state, value: boolean) {
     state.isPaused = value;
     if (value) {
       state.raceInProgress = false;
     }
   },
-  setLastRunningHorse(state, horseIndex) {
+  setLastRunningHorse(state, horseIndex: number | null) {
     state.lastRunningHorse = horseIndex;
   }
 };
 
-export const actions = {
-  initialize ({ commit }) {
-    const horseList = [];
+export const actions: ActionTree<RootState, RootState> = {
+  initialize({ commit }) {
+    const horseList: Horse[] = [];
     Object.entries(Horses).forEach(([name, color], i) => {
       horseList.push(new Horse(i + 1, name, color));
     });
 
     commit("setHorseList", horseList);
   },
-  generateProgram ({ commit, state }) {
+  generateProgram({ commit, state }) {
     if (state.raceInProgress) {
       commit("setPaused", true);
     }
@@ -82,8 +97,8 @@ export const actions = {
     commit("setLastRunningHorse", null);
     commit("resetAllHorses");
     commit("resetLap");
-    const rounds = [];
-    const pathDistances = [1200, 1400, 1600, 1800, 2000, 2200];
+    const rounds: Round[] = [];
+    const pathDistances = PathDistances;
     for (let i = 0; i < 6; i++) {
       const lap = i + 1;
       const round = new Round(pathDistances[i], lap);
@@ -100,21 +115,21 @@ export const actions = {
       console.error("No round found");
       return;
     }
-    
+
     if (round.horses.length < 10) {
       throw new Error("There are not enough horses to start");
     }
 
     commit("setRaceInProgress", true);
-    if (!state.lastRunningHorse) {
+    if (state.lastRunningHorse === null) {
       commit("roundHorseReset");
     }
-  
+
     while (round.results.length < round.horses.length) {
       for (let i = 0; i < round.horses.length; i++) {
-        const idx = state.lastRunningHorse || i;
+        const idx = state.lastRunningHorse ?? i;
         const horse = round.horses[idx];
-        if (state.lastRunningHorse) {
+        if (state.lastRunningHorse !== null) {
           commit("setLastRunningHorse", null);
         }
 
@@ -132,7 +147,6 @@ export const actions = {
         await new Promise((resolve) => setTimeout(resolve, delayDuration));
         if (horse.getDistance() >= round.distance) {
           commit("horseFinish", i);
-          console.log("horseFinish", i);
         }
       }
       if (state.isPaused) {
@@ -154,17 +168,17 @@ export const actions = {
   }
 };
 
-export const getters = {
+export const getters : GetterTree<RootState, RootState> = {
   getHorseList(state) {
-    return state.horseList
+    return state.horseList;
   },
   getRounds(state) {
-    return state.rounds
+    return state.rounds;
   },
   getCurrentLap(state) {
-    return state.currentLap
+    return state.currentLap;
   },
   isRaceStarted(state) {
-    return state.raceInProgress
+    return state.raceInProgress;
   }
 };

@@ -1,12 +1,12 @@
 <template>
   <div ref="hippodrome">
-    <div class="round">{{ roundTitle }}</div>
+    <div class="round-title">{{ roundTitle }}</div>
     <div class="lane" v-for="(horse, i) in horses" :key="i">
       <div class="lane__number">
         <div>{{ i + 1 }}</div>
       </div>
       <div class="lane__path">
-        <Horse
+        <HorseComponent
           :horse="horse"
           :distance="distance"
           :lane-length="hippodromeWidth"
@@ -19,12 +19,13 @@
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import type { Round } from "@/utils/round";
-import Horse from "./Horse.vue";
+import type { Round } from "@/utils/types/round";
+import type { Horse } from "@/utils/types/horse";
+import HorseComponent from "@/components/Horse.vue";
 export default defineComponent({
   name: "Hippodrome",
   components: {
-    Horse,
+    HorseComponent,
   },
   props: {
     round: {
@@ -42,16 +43,22 @@ export default defineComponent({
     };
   },
   mounted() {
-    const ref = this.$refs.hippodrome as HTMLElement;
-    if (ref) {
-      this.hippodromeWidth = ref.offsetWidth - 120;
+    this.calculateHippodromeWidth();
+    window.addEventListener("resize", this.calculateHippodromeWidth);
+  },
+  methods: {
+    calculateHippodromeWidth() {
+      const ref = this.$refs.hippodrome as HTMLElement;
+      if (ref) {
+        this.hippodromeWidth = ref.offsetWidth - 120;
+      }
     }
   },
-  computed: {
-    horses() {
+  computed:  {
+    horses(): Horse[] {
       return this.round.getHorses();
     },
-    distance() {
+    distance(): number {
       return this.round.distance;
     },
   },
@@ -59,7 +66,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.round {
+.round-title {
   width: 100%;
   text-align: center;
   color: $olive-gray;
